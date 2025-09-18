@@ -1,0 +1,66 @@
+name: Build with ImageMagick
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  build:
+    runs-on: windows-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+
+      - name: Install ImageMagick
+        run: choco install imagemagick -y
+
+      - name: Install Zip
+        run: choco install zip unzip -y
+
+      - name: Magick
+        run: |
+          ./mini_size.bat
+
+      - name: Zip Pics.zip
+        run: |
+          zip -9 -r ./pics.zip ./pics
+
+      - name: Upload build artifacts
+        uses: actions/upload-artifact@v4
+        with:
+          name: pics
+          path: |
+            ./pics.zip
+
+      - name: Delete old tag
+        run: |
+          git config --global user.name "GitHub Actions"
+          git config --global user.email "actions@github.com"
+          git fetch --tags
+          git tag -d pics || true
+          git push origin :refs/tags/pics || true
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Create Release
+        id: create_release
+        uses: actions/create-release@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          tag_name: pics
+          release_name: Release pics
+          draft: false
+          prerelease: false
+      
+      - name: Upload Release Asset
+        uses: actions/upload-release-asset@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          upload_url: ${{ steps.create_release.outputs.upload_url }}
+          asset_path: ./pics.zip
+          asset_name: pics
+          asset_content_type: application/octet-stream

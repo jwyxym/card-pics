@@ -41,6 +41,8 @@ jobs:
           git fetch --tags
           git tag -d pics || true
           git push origin :refs/tags/pics || true
+          git tag pics
+          git push origin pics
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 

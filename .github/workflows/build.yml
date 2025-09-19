@@ -8,7 +8,9 @@ on:
 jobs:
   build:
     runs-on: windows-latest
-
+    permissions:
+      contents: write
+      
     steps:
       - name: Checkout
         uses: actions/checkout@v3
@@ -23,7 +25,7 @@ jobs:
           git tag pics
           git push origin pics
         env:
-          SSH_AUTH_SOCK: /tmp/ssh_agent.sock
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Install ImageMagick
         run: choco install imagemagick -y

@@ -15,18 +15,6 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v3
 
-      - name: Delete old tag
-        run: |
-          git config --global user.name "GitHub Actions"
-          git config --global user.email "actions@github.com"
-          git fetch --tags
-          git tag -d pics || true
-          git push origin :refs/tags/pics || true
-          git tag pics
-          git push origin pics
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-
       - name: Install ImageMagick
         run: choco install imagemagick -y
 
@@ -48,6 +36,18 @@ jobs:
           path: |
             ./pics.zip
 
+      - name: Delete old tag
+        run: |
+          git config --global user.name "GitHub Actions"
+          git config --global user.email "actions@github.com"
+          git fetch --tags
+          git tag -d pics || true
+          git push origin :refs/tags/pics || true
+          git tag pics
+          git push origin pics
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          
       - name: Create Release
         id: create_release
         uses: actions/create-release@v1

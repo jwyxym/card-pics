@@ -32,7 +32,7 @@ jobs:
       - name: Upload build artifacts
         uses: actions/upload-artifact@v4
         with:
-          name: pics
+          name: pics.zip
           path: |
             ./pics.zip
 
@@ -64,5 +64,5 @@ jobs:
         with:
           upload_url: ${{ steps.create_release.outputs.upload_url }}
           asset_path: ./pics.zip
-          asset_name: pics
+          asset_name: pics.zip
           asset_content_type: application/octet-stream

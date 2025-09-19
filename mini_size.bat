@@ -16,5 +16,3 @@ for %%f in ("%SOURCE_FOLDER%\*.jpg") do (
     echo %%~nxf
     magick "%%f" -resize %WIDTH%x -quality %QUALITY% "!outfile!"
 )
-
-pause

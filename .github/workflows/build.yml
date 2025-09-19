@@ -3,7 +3,7 @@ name: Build with ImageMagick
 on:
   push:
     branches:
-      - [main, test]
+      - test
 
 jobs:
   build:

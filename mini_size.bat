@@ -14,7 +14,7 @@ for %%f in ("%SOURCE_FOLDER%\*.jpg") do (
     set "outfile=%OUTPUT_FOLDER%\%%~nf.jpg"
 
     echo %%~nxf
-    magick convert "%%f" -resize %WIDTH%x -quality %QUALITY% "!outfile!"
+    magick "%%f" -resize %WIDTH%x -quality %QUALITY% "!outfile!"
 )
 
 pause
